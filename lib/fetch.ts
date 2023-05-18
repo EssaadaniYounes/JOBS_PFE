@@ -1,6 +1,10 @@
 // import axios, { AxiosHeaders, AxiosRequestHeaders, AxiosResponse } from 'axios';
 
-import axios, { AxiosHeaders, RawAxiosRequestHeaders } from 'axios';
+import axios, {
+  AxiosHeaders,
+  AxiosRequestHeaders,
+  RawAxiosRequestHeaders,
+} from 'axios';
 
 class Fetch {
   static readonly API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -22,7 +26,10 @@ class Fetch {
     const data = await response.json();
     return [];
   }
-  public static async getAllAxios(url: string, headers?: AxiosHeaders) {
+  public static async getAllAxios(
+    url: string,
+    headers?: AxiosHeaders | RawAxiosRequestHeaders,
+  ) {
     const response = await axios(Fetch.API_URL + url, {
       method: 'GET',
       headers: {

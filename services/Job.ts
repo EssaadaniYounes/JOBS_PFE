@@ -16,6 +16,22 @@ class Job {
     );
     return data;
   }
+
+  static async getPublisherJobs(token: string): Promise<IJob[]> {
+    const data = await Fetch.getAllAxios(`Jobs/JobsCreatedByPublisher`, {
+      Authorization: token,
+    });
+    return data;
+  }
+  static async getAppliedJob(id: number, token: string): Promise<Apply[]> {
+    const data = await Fetch.getAllAxios(
+      `Jobs/GetAppliedUsersForJobCreatedByPublisher/job/${id}`,
+      {
+        Authorization: token,
+      },
+    );
+    return data;
+  }
 }
 
 export default Job;

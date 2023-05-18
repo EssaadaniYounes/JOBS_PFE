@@ -19,7 +19,7 @@ function page() {
     setLoading(true);
     const data = await User.Login(payload);
     if (data.isAuthenticated) {
-      data.role == 'JobSeeker' ? router.push('/') : router.push('/admin');
+      data.role == 'JobSeeker' ? router.push('/') : router.push('/admin/jobs');
     } else {
       alert('Invalid Credentials!');
     }
