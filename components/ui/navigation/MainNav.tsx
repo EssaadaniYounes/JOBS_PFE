@@ -4,6 +4,7 @@ import demos from '@/constants/demos';
 import Link from 'next/link';
 import Cookie from 'services/Cookie';
 import { cookies } from 'next/dist/client/components/headers';
+import Logout from '@/components/partials/logout';
 function MainNav() {
   return (
     <div className="navbar bg-base-100 px-4">
@@ -20,7 +21,7 @@ function MainNav() {
             {demo.title}
           </Link>
         ))}
-        {new Cookie(cookies()).getCookie('role').value == 'JobSeeker' && (
+        {new Cookie(cookies()).getCookie('role')?.value == 'JobSeeker' && (
           <Link
             href={`/applied`}
             className="font-medium text-gray-600 duration-150 hover:text-gray-800"
@@ -29,6 +30,7 @@ function MainNav() {
           </Link>
         )}
       </div>
+      {!new Cookie(cookies()).isExist("token") && (
       <div className="navbar-end space-x-2">
         <Link
           href={'/login'}
@@ -44,6 +46,12 @@ function MainNav() {
           Register
         </Link>
       </div>
+      )}
+      {new Cookie(cookies()).isExist("token") && (
+      <div className="navbar-end space-x-2">
+        <Logout/>
+      </div>
+      )}
     </div>
   );
 }

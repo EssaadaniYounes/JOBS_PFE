@@ -33,14 +33,15 @@ class Job {
     );
     return data;
   }
-  static async createJob(payload: any, token: string) {
+  static async createJob(payload: any, token: string):Promise<IJob> {
     const formData: FormData = new FormData();
     Object.keys(payload).map((key) => {
       formData.append(key, payload[key]);
     });
-    const res = await Fetch.post('Jobs/CreateJobByPublisher', formData, {
+    const data = await Fetch.post('Jobs/CreateJobByPublisher', formData, {
       Authorization: token,
     });
+    return data;
   }
   static async updateJob(id: number, payload: any, token: string):Promise<void> {
     const formData: FormData = new FormData();

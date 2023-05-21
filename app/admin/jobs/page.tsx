@@ -17,7 +17,7 @@ async function pages() {
           Create new job <AiOutlinePlus size={25} />
         </label>
       </div>
-      <CreateJob />
+      
       <JobsList data={data} />
     </div>
   );

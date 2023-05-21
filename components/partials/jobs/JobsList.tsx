@@ -7,9 +7,11 @@ import { FiEdit } from 'react-icons/fi';
 import UpdateJob from './UpdateJob';
 import Job from 'services/Job';
 import Cookie from 'services/Cookie';
+import CreateJob from './CreateJob';
 
 function JobsList({ data }: { data: IJob[] }) {
-  const [selectedId, setSelectedId] = useState<number>(1);
+  const [CSRData, setCSRData] = useState<IJob[]>(data)
+    const [selectedId, setSelectedId] = useState<number>(1);
   const labelRef = useRef<HTMLLabelElement>(null);
   const columns = [
     {
@@ -78,8 +80,9 @@ function JobsList({ data }: { data: IJob[] }) {
   return (
     <>
       <UpdateJob id={selectedId} />
+      <CreateJob updateState={setCSRData} data={CSRData} />
       <label htmlFor="update-modal" ref={labelRef} className=""></label>
-      <Table data={data} columns={columns} />
+      <Table data={CSRData} columns={columns} />
     </>
   );
 }

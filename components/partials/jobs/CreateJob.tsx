@@ -1,19 +1,19 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import useSWR from 'swr';
 import Category from 'services/Category';
 import Job from 'services/Job';
 import Cookie from 'services/Cookie';
 const fetcher = async (...args: any[]) => await Category.getAll();
-function CreateJob() {
-  const { data, isLoading } = useSWR('categories', fetcher);
+function CreateJob({updateState, data}) {
+  const { data:categories, isLoading } = useSWR('categories', fetcher);
   const [payload, setPayload] = useState<JobPayload>({
     jobDescription: '',
     categoryId: '',
     jobImage: '',
     jobTitle: '',
   });
-
+  const labelRef = useRef<HTMLLabelElement>(null);
   const handleChange = ({
     target: { value, name, files },
   }: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +23,9 @@ function CreateJob() {
     setPayload({ ...payload, jobImage: files[0] });
   };
   const submit = async () => {
-    await Job.createJob(payload, Cookie.getClientCookie('token'));
+    const job = await Job.createJob(payload, Cookie.getClientCookie('token'));
+    updateState([...data,job]);
+    labelRef.current?.click();
   };
   return (
     <>
@@ -31,6 +33,7 @@ function CreateJob() {
       <label htmlFor="my-modal-4" className="modal cursor-pointer">
         <label className="modal-box relative" htmlFor="">
           <label
+          ref={labelRef}
             htmlFor="my-modal-4"
             className="btn-sm btn-circle btn absolute right-2 top-2"
           >
@@ -105,7 +108,7 @@ function CreateJob() {
               >
                 <option value="">Choose category</option>
                 {!isLoading &&
-                  data?.map((cat) => (
+                  categories?.map((cat) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.name}
                     </option>
