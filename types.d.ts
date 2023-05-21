@@ -4,9 +4,23 @@ interface IJob {
   jobDescription: string;
   jobImageURL: string;
   jobImagePublicId: string;
-  categoryId: number;
+  categoryId: number | string;
   categoryName: string;
   categoryDescription: string;
+  publisherFirstName: string;
+  publisherLastName: string;
+  publisherEmail: string;
+  publisherUserName: string;
+}
+interface JobPayload {
+  jobImage: File | null;
+  jobTitle: string | undefined;
+  jobDescription: string | undefined;
+  categoryId: null | string | undefined;
+}
+interface CategoryPayload {
+  name: string | undefined;
+  description: string | undefined;
 }
 type Role = 'Publisher' | 'JobSeeker';
 type LoginPayload = {
@@ -36,3 +50,8 @@ type Apply = {
   userName: string;
   applyDate: string;
 };
+interface ICategory {
+  id: number;
+  name: string;
+  description: string;
+}

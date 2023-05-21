@@ -30,7 +30,7 @@ function JobDetails({ job }: { job: IJob }) {
         <div className="col-span-12 flex flex-col divide-y divide-gray-700 p-6 lg:col-span-6 lg:p-10">
           <div className="space-y-2 pb-4 pt-6">
             <h1 className="text-3xl font-bold">{job.jobTitle}</h1>
-            <p>{job.jobDescription}</p>
+            <p className="break-all	">{job.jobDescription}</p>
             <Link
               rel="noopener noreferrer"
               href={`/jobs/job-by-cat/${job.categoryId}`}
@@ -60,6 +60,15 @@ function JobDetails({ job }: { job: IJob }) {
                 Apply for this job
               </button>
             )}
+            <p>
+              Contact link :{' '}
+              <a
+                href={`mailto:${job.publisherEmail}`}
+                className="font-semibold"
+              >
+                {job.publisherEmail}
+              </a>{' '}
+            </p>
           </div>
         </div>
       </div>

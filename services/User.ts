@@ -39,6 +39,21 @@ class User {
     );
     return message;
   }
+  static async appliedJobs(token: string): Promise<Apply[]> {
+    const data = await Fetch.getAllAxios(`ApplyForJobs/applied-jobs`, {
+      Authorization: token,
+    });
+    return data;
+  }
+  static async cancelApplying(id: string, token: string): Promise<void> {
+    const data = await Fetch.delete(
+      `ApplyForJobs/applied-jobs/DeleteAppliedJob/${id}`,
+      {
+        Authorization: token,
+      },
+    );
+    alert(data);
+  }
 }
 
 export default User;

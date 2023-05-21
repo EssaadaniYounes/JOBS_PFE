@@ -5,12 +5,26 @@ import React from 'react';
 function JobCard({ job }: { job: IJob }) {
   return (
     <div className="overflow-hidden rounded-md bg-white shadow-sm ">
-      <Image src={job.jobImageURL} width={400} height={200} alt="Job thumb" />
+      <Image
+        src={job.jobImageURL}
+        className="max-h-[200px] object-cover"
+        width={400}
+        height={200}
+        alt="Job thumb"
+      />
       <div className="px-1">
         <h2 className="text-lg font-medium capitalize text-gray-600">
           {job.jobTitle.toLowerCase()}
         </h2>
-        <p>{job.jobDescription.slice(0, 30).toLowerCase()}...</p>
+        <p>
+          Posted by :
+          <span className="pl-1 font-medium capitalize">
+            {job.publisherFirstName.concat(' ', job.publisherLastName)}
+          </span>
+        </p>
+        <p className="capitalize">
+          {job.jobDescription.slice(0, 30).toLowerCase()}...
+        </p>
         <div className="my-2 space-x-2">
           <Link
             href={`/jobs/job-by-cat/${job.categoryId}`}

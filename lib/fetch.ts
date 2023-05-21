@@ -59,7 +59,7 @@ class Fetch {
     return res.data;
   }
 
-  public static async put(url: string, data: any, headers?: AxiosHeaders) {
+  public static async put(url: string, data: any, headers?: RawAxiosRequestHeaders) {
     const res = await axios({
       method: 'PUT',
       url: Fetch.API_URL + url,
@@ -72,7 +72,7 @@ class Fetch {
     return res;
   }
 
-  public static async delete(url: string, headers?: AxiosHeaders) {
+  public static async delete(url: string, headers?: RawAxiosRequestHeaders) {
     const res = await axios({
       method: 'DELETE',
       url: Fetch.API_URL + url,

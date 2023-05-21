@@ -1,55 +1,50 @@
 'use client';
 import Table from '@/components/ui/Table';
-import Link from 'next/link';
 import React, { useRef, useState } from 'react';
-import { AiFillDelete, AiFillEye, AiOutlineEdit } from 'react-icons/ai';
-import { FiEdit } from 'react-icons/fi';
-import UpdateJob from './UpdateJob';
-import Job from 'services/Job';
+import { AiFillDelete, AiOutlineEdit } from 'react-icons/ai';
+import UpdateJob from './UpdateCategory';
 import Cookie from 'services/Cookie';
+import Category from 'services/Category';
 
-function JobsList({ data }: { data: IJob[] }) {
+function CategoriesList({ data }: { data: ICategory[] }) {
   const [selectedId, setSelectedId] = useState<number>(1);
   const labelRef = useRef<HTMLLabelElement>(null);
   const columns = [
     {
       name: '#',
-      selector: (row: IJob, i: number) => (
+      selector: (row: ICategory, i: number) => (
         <span className="font-medium ">{++i}</span>
       ),
       sortable: true,
     },
     {
       name: 'Name',
-      selector: (row: IJob) => (
+      selector: (row: ICategory) => (
         <span className="block text-sm font-medium leading-6 text-gray-900">
-          {row.jobTitle.slice(0, 20)}
+          {row.name}
         </span>
       ),
       sortable: true,
     },
     {
-      name: 'Category',
-      selector: (row: IJob) => (
+      name: 'Description',
+      selector: (row: ICategory) => (
         <span className="block text-sm font-medium leading-6 text-gray-900">
-          {row.categoryName}
+          {row.description}
         </span>
       ),
       sortable: true,
     },
     {
       name: 'Actions',
-      cell: (row: IJob) => (
+      cell: (row: ICategory) => (
         <div className="flex items-center gap-2">
-          <Link
-            href={`/admin/jobs/job/${row.jobId}`}
-            className="btn-info btn-xs btn space-x-1 rounded-md"
-          >
-            <AiFillEye size={18} color={'#f9fafb'} />
-          </Link>
           <button
             onClick={async () =>
-              Job.deleteJob(row.jobId, Cookie.getClientCookie('token'))
+              Category.deleteCategory(
+                row.id.toString(),
+                Cookie.getClientCookie('token'),
+              )
             }
             className="btn-error btn-xs btn space-x-1 rounded-md"
           >
@@ -58,9 +53,9 @@ function JobsList({ data }: { data: IJob[] }) {
           <button
             onClick={() => {
               setSelectedId((prev: number) => {
-                return row.jobId;
+                return row.id;
               });
-              labelRef.current.click();
+              labelRef.current?.click();
             }}
             className="btn-secondary btn-xs btn space-x-1 rounded-md"
           >
@@ -78,10 +73,10 @@ function JobsList({ data }: { data: IJob[] }) {
   return (
     <>
       <UpdateJob id={selectedId} />
-      <label htmlFor="update-modal" ref={labelRef} className=""></label>
+      <label htmlFor="update-category" ref={labelRef} className=""></label>
       <Table data={data} columns={columns} />
     </>
   );
 }
 
-export default JobsList;
+export default CategoriesList;

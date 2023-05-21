@@ -1,0 +1,132 @@
+'use client';
+import React, { useState } from 'react';
+import useSWR from 'swr';
+import Category from 'services/Category';
+import Job from 'services/Job';
+import Cookie from 'services/Cookie';
+function UpdateJob({ id }: { id: number }) {
+  const { data, isLoading } = useSWR('categories', async () =>
+    Category.getAll(),
+  );
+  const { data: job } = useSWR('jobs' + id, async () =>
+    Job.getJobById(id.toString())
+  );
+  const [payload, setPayload] = useState<JobPayload>({
+    jobTitle: job?.jobTitle,
+    jobDescription: job?.jobDescription,
+    categoryId: job?.categoryId,
+    jobImage: null,
+  });
+
+  const handleChange = ({
+    target: { value, name, files },
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    if (name != 'jobImage') {
+      return setPayload({ ...payload, [name]: value });
+    }
+    setPayload({ ...payload, jobImage: files[0] });
+  };
+  const submit = async () => {
+    await Job.updateJob(id, payload, Cookie.getClientCookie('token'));
+  };
+  return (
+    <>
+      <input type="checkbox" id="update-modal" className="modal-toggle" />
+      <label htmlFor="update-modal" className="modal cursor-pointer">
+        <label className="modal-box relative" htmlFor="">
+          <label
+            htmlFor="update-modal"
+            className="btn-sm btn-circle btn absolute right-2 top-2"
+          >
+            ✕
+          </label>
+
+          <h3 className="text-lg font-bold">Update {job?.jobTitle}</h3>
+          <div className="space-y-2">
+            <div>
+              <label
+                htmlFor="jobTitle"
+                className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Job Title
+              </label>
+              <input
+                onChange={handleChange}
+                value={payload.jobTitle}
+                type="text"
+                name="jobTitle"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                placeholder="Developer"
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="jobDescription"
+                className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Job Description
+              </label>
+              <input
+                onChange={handleChange}
+                value={payload.jobDescription}
+                type="text"
+                multiple
+                name="jobDescription"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                placeholder="..."
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="jobImage"
+                className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Job image
+              </label>
+              <input
+                onChange={handleChange}
+                type="file"
+                name="jobImage"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="categoryId"
+                className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Category
+              </label>
+              <select
+                value={payload.categoryId}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setPayload({ ...payload, categoryId: e.target.value });
+                }}
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+              >
+                <option value="">Choose category</option>
+                {!isLoading &&
+                  data?.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <button
+              onClick={submit}
+              className="btn-primary btn mx-auto block w-fit"
+            >
+              Publish
+            </button>
+          </div>
+        </label>
+      </label>
+    </>
+  );
+}
+
+export default UpdateJob;

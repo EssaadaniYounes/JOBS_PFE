@@ -2,13 +2,15 @@ import Image from 'next/image';
 import React from 'react';
 import demos from '@/constants/demos';
 import Link from 'next/link';
+import Cookie from 'services/Cookie';
+import { cookies } from 'next/dist/client/components/headers';
 function MainNav() {
   return (
     <div className="navbar bg-base-100 px-4">
       <div className="navbar-start">
         <Image src={'/logo.svg'} width={80} height={80} alt="Logo" />
       </div>
-      <div className="navbar-center hidden md:flex">
+      <div className="navbar-center space-x-2 md:flex">
         {demos.MainNavDemos.map((demo) => (
           <Link
             key={demo.sigment}
@@ -18,6 +20,14 @@ function MainNav() {
             {demo.title}
           </Link>
         ))}
+        {new Cookie(cookies()).getCookie('role').value == 'JobSeeker' && (
+          <Link
+            href={`/applied`}
+            className="font-medium text-gray-600 duration-150 hover:text-gray-800"
+          >
+            Applied Jobs
+          </Link>
+        )}
       </div>
       <div className="navbar-end space-x-2">
         <Link

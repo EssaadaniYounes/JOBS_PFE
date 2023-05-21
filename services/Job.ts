@@ -1,4 +1,5 @@
 import Fetch from '@/lib/fetch';
+import axios from 'axios';
 class Job {
   static async getJobs(): Promise<IJob[]> {
     const data = await Fetch.getAllAxios('visitor');
@@ -31,6 +32,29 @@ class Job {
       },
     );
     return data;
+  }
+  static async createJob(payload: any, token: string) {
+    const formData: FormData = new FormData();
+    Object.keys(payload).map((key) => {
+      formData.append(key, payload[key]);
+    });
+    const res = await Fetch.post('Jobs/CreateJobByPublisher', formData, {
+      Authorization: token,
+    });
+  }
+  static async updateJob(id: number, payload: any, token: string):Promise<void> {
+    const formData: FormData = new FormData();
+    Object.keys(payload).map((key) => {
+      formData.append(key, payload[key]);
+    });
+    const res = await Fetch.put(`Jobs/UpdateJobByPublisher/${id}`, formData, {
+      Authorization: token,
+    });
+  }
+  static async deleteJob(id: number, token: string) {
+    const data = await Fetch.delete(`Jobs/DeleteJobByPublisher/${id}`, {
+      Authorization: token,
+    });
   }
 }
 
