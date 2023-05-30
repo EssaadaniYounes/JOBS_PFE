@@ -68,7 +68,7 @@ function JobsList({ data }: { data: IJob[] }) {
           >
             <AiOutlineEdit size={18} color={'#f9fafb'} />
           </button>
-          )
+          
         </div>
       ),
       ignoreRowClick: true,

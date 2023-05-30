@@ -1,10 +1,14 @@
 "use client"
 import React from "react";
 import Cookie from "services/Cookie";
+import { useRouter } from 'next/navigation';
+
 export default function Logout(){
+  const router = useRouter();
     const handleLogout = () => {
         Cookie.removeCookie("token");
         Cookie.removeCookie("role");
+        router.push('/');
     }
     return(
         <button onClick={handleLogout}

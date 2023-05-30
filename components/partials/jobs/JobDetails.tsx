@@ -16,8 +16,56 @@ function JobDetails({ job }: { job: IJob }) {
     alert(data);
     router.push('/');
   }
+  async function back(){
+    router.push('/');
+  }
   return (
-    <div className="h-full dark:bg-gray-800 dark:text-gray-50">
+
+
+
+<div  className="relative flex h-screen items-center  overflow-hidden p-5 lg:mx-40">
+  <div  className="card min-w-screen  lg:mt-20 flex-col pb-4 shadow-xl rounded-none">
+    <div  className="h-64 w-full bg-cover"  style={{ backgroundImage: `url(${job.jobImageURL})` }}>
+      <div  className="h-full bg-gradient-to-b from-transparent to-white"></div>
+    </div>
+    <div  className="mb-2 px-4">
+      <div  className="mb-4 text-2xl font-bold text-slate-600">{job.jobTitle}</div>
+      <div  className="text-slate-500">{job.jobDescription}, Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa eius ea omnis soluta voluptate minus nulla id repellendus repudiandae illum. Voluptatibus ratione nisi, qui consectetur pariatur perferendis mollitia eius maiores! orem ipsum dolor sit amet consectetur adipisicing elit. Culpa eius ea omnis soluta voluptate minus, Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit</div>
+    </div>
+    <div  className="mt-auto flex items-center justify-between px-4">
+      <div  className="mt-auto px-4">
+        <div className="text-xs text-slate-500">#category :<span   className="text-xs uppercase text-slate-800">{job.categoryName}</span> </div>
+        <div  className="text-xs uppercase text-slate-700">
+          <div  className="flex items-center">
+            by {job.publisherFirstName.concat(' ', job.publisherLastName)}
+            <a href={`mailto:${job.publisherEmail}`}>
+              <svg  className="mx-5 h-6 w-6 text-cyan-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-5 7 5M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div>
+        <button   className=" px-8 py-4 text-sm  text-cyan-950 hover:underline" onClick={back} >back to list</button>
+      
+      {Cookie.getClientCookie('role') == 'JobSeeker' && (
+              <button
+                onClick={submit}
+                type="submit"
+                className="bg-cyan-600 px-8 py-4 text-sm uppercase text-cyan-100 hover:bg-cyan-700 hover:text-cyan-50"
+              >
+                Apply now
+              </button>
+            )}
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+/* 
+    <div className=" dark:bg-gray-800 dark:text-gray-50">
       <div className="container mx-auto grid grid-cols-12">
         <div className="col-span-12 flex flex-col justify-center bg-cover bg-no-repeat align-middle dark:bg-gray-700 lg:col-span-6 lg:h-auto">
           <Image
@@ -72,7 +120,9 @@ function JobDetails({ job }: { job: IJob }) {
           </div>
         </div>
       </div>
-    </div>
+    </div> */
+
+
   );
 }
 

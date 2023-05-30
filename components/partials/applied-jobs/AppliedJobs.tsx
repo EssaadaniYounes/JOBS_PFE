@@ -4,6 +4,12 @@ import Link from 'next/link';
 import React from 'react';
 import { AiFillDelete, AiFillEye } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
+
+function formatDate(dateString: string) {
+  const date = new Date(dateString);
+  const formattedDate = `${date.toLocaleDateString()}, ${date.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })}`;
+  return formattedDate;
+}
 function AppliedList({ data }: { data: Apply[] }) {
   const columns = [
     {
@@ -25,9 +31,9 @@ function AppliedList({ data }: { data: Apply[] }) {
     {
       name: 'Email',
       selector: (row: Apply) => (
-        <span className="block text-sm font-medium leading-6 text-gray-900">
+          <a href={`mailto:${row.email}`} className="block text-sm font-medium leading-6 text-gray-900">
           {row.email}
-        </span>
+        </a>
       ),
       sortable: true,
     },
@@ -35,7 +41,7 @@ function AppliedList({ data }: { data: Apply[] }) {
       name: 'Apply date',
       selector: (row: Apply) => (
         <span className="block text-sm font-medium leading-6 text-gray-900">
-          {row.applyDate}
+          {formatDate(row.applyDate)}
         </span>
       ),
       sortable: true,

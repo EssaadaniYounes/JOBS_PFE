@@ -39,7 +39,7 @@ function CategoriesList({ data }: { data: ICategory[] }) {
       name: 'Actions',
       cell: (row: ICategory) => (
         <div className="flex items-center gap-2">
-          <button
+          {/* <button
             onClick={async () =>
               Category.deleteCategory(
                 row.id.toString(),
@@ -49,7 +49,7 @@ function CategoriesList({ data }: { data: ICategory[] }) {
             className="btn-error btn-xs btn space-x-1 rounded-md"
           >
             <AiFillDelete size={18} color={'#f9fafb'} />
-          </button>
+          </button> */}
           <button
             onClick={() => {
               setSelectedId((prev: number) => {
@@ -61,7 +61,7 @@ function CategoriesList({ data }: { data: ICategory[] }) {
           >
             <AiOutlineEdit size={18} color={'#f9fafb'} />
           </button>
-          )
+          
         </div>
       ),
       ignoreRowClick: true,
