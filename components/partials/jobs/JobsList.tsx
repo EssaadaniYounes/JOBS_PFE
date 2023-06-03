@@ -79,7 +79,7 @@ function JobsList({ data }: { data: IJob[] }) {
   ];
   return (
     <>
-      <UpdateJob id={selectedId} />
+      <UpdateJob id={selectedId} updateState={setCSRData} state={CSRData} />
       <CreateJob updateState={setCSRData} data={CSRData} />
       <label htmlFor="update-modal" ref={labelRef} className=""></label>
       <Table data={CSRData} columns={columns} />

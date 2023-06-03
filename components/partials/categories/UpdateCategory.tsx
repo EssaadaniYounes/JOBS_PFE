@@ -1,28 +1,40 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import Category from 'services/Category';
 import Cookie from 'services/Cookie';
-function updateCategory({ id }: { id: number }) {
-  const { data: category } = useSWR('categories' + id, async () =>
-    Category.getCategoryById(id.toString()),
-  );
+function updateCategory({ id, updateState, data }: { id: number }) {
   const [payload, setPayload] = useState<CategoryPayload>({
-    name: category?.name,
-    description: category?.description,
+    name: '',
+    description: '',
   });
-
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setPayload({ name: '', description: '' });
+    Category.getCategoryById(id.toString()).then((data) => {
+      setPayload(data);
+    });
+  }, [id]);
   const handleChange = ({
     target: { value, name },
   }: React.ChangeEvent<HTMLInputElement>) => {
     return setPayload({ ...payload, [name]: value });
   };
   const submit = async () => {
-    await Category.updateCategory(
+    setLoading(true);
+    const resCat = await Category.updateCategory(
       id.toString(),
       payload,
       Cookie.getClientCookie('token'),
     );
+    const newCategories = data.map((c) => {
+      if (c.id == resCat.id) {
+        return { ...resCat };
+      }
+      return c;
+    });
+    updateState(newCategories);
+    setLoading(false);
   };
   return (
     <>
@@ -74,10 +86,11 @@ function updateCategory({ id }: { id: number }) {
               />
             </div>
             <button
+              disabled={loading}
               onClick={submit}
               className="btn-primary btn mx-auto block w-fit"
             >
-              Save
+              {!loading ? 'Save' : 'Saving..'}
             </button>
           </div>
         </label>

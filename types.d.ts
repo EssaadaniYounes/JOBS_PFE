@@ -13,7 +13,7 @@ interface IJob {
   publisherUserName: string;
 }
 interface JobPayload {
-  jobImage: File | null;
+  jobImage?: File | null;
   jobTitle: string | undefined;
   jobDescription: string | undefined;
   categoryId: null | string | undefined;

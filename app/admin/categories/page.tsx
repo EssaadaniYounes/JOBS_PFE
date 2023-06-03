@@ -15,7 +15,7 @@ async function pages() {
           Create new category <AiOutlinePlus size={25} />
         </label>
       </div>
-      <CreateCategory />
+      
       <CategoriesList data={data} />
     </div>
   );

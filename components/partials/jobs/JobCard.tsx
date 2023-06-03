@@ -5,27 +5,35 @@ import React from 'react';
 function JobCard({ job }: { job: IJob }) {
   return (
     <div>
-      <div className="card flex flex-col shadow-xl pb-4 rounded-none">
-      <div className="bg-cover w-full h-64" style={{ backgroundImage: `url(${job.jobImageURL})` }}>
-        <div className="h-full bg-gradient-to-b from-transparent to-white"></div>
-      </div>
-      <div className="mb-2 px-4">
-        <div className="mb-4 text-2xl font-bold text-slate-600 ">{job.jobTitle}</div>
-        <div className="text-slate-500">{job.jobDescription}</div>
-      </div>
-      <div className="mt-auto flex items-center justify-between px-4">
-        <div className="text-xs uppercase text-slate-500">{job.categoryName}</div>
-        <Link
+      <div className="card flex flex-col rounded-none pb-4 shadow-xl">
+        <div
+          className="h-64 w-full bg-cover"
+          style={{ backgroundImage: `url(${job.jobImageURL})` }}
+        >
+          <div className="h-full bg-gradient-to-b from-transparent to-white"></div>
+        </div>
+        <div className="mb-2 px-4">
+          <div className="mb-4 text-2xl font-bold text-slate-600 ">
+            {job.jobTitle}
+          </div>
+          <div className="overflow-clip text-slate-500">
+            {job.jobDescription.slice(0, 45)}...
+          </div>
+        </div>
+        <div className="mt-auto flex items-center justify-between px-4">
+          <div className="text-xs uppercase text-slate-500">
+            {job.categoryName}
+          </div>
+          <Link
             href={`/jobs/${job.jobId}`}
             className="bg-cyan-600 px-8 py-4 text-sm uppercase text-cyan-100 hover:bg-cyan-700 hover:text-cyan-50"
           >
             Read more
           </Link>
+        </div>
       </div>
-    </div>
 
-
-    {/* <div className="overflow-hidden rounded-md bg-white shadow-sm ">
+      {/* <div className="overflow-hidden rounded-md bg-white shadow-sm ">
       <Image
         src={job.jobImageURL}
         className="max-h-[200px] object-cover"

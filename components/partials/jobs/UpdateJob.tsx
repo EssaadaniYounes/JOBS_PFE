@@ -1,23 +1,31 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import Category from 'services/Category';
 import Job from 'services/Job';
 import Cookie from 'services/Cookie';
-function UpdateJob({ id }: { id: number }) {
+function UpdateJob({ id, updateState, state }: { id: number }) {
   const { data, isLoading } = useSWR('categories', async () =>
     Category.getAll(),
   );
-  const { data: job } = useSWR('jobs' + id, async () =>
-    Job.getJobById(id.toString())
-  );
+  const [loading, setLoading] = useState(false);
   const [payload, setPayload] = useState<JobPayload>({
-    jobTitle: job?.jobTitle,
-    jobDescription: job?.jobDescription,
-    categoryId: job?.categoryId,
+    jobTitle: '',
+    jobDescription: '',
+    categoryId: '',
     jobImage: null,
   });
-
+  useEffect(() => {
+    setPayload({
+      jobTitle: '',
+      jobDescription: '',
+      categoryId: '',
+      jobImage: null,
+    });
+    Job.getJobById(id.toString()).then((data) => {
+      setPayload({ ...data });
+    });
+  }, [id]);
   const handleChange = ({
     target: { value, name, files },
   }: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +35,21 @@ function UpdateJob({ id }: { id: number }) {
     setPayload({ ...payload, jobImage: files[0] });
   };
   const submit = async () => {
-    await Job.updateJob(id, payload, Cookie.getClientCookie('token'));
+    setLoading(true);
+    const job = await Job.updateJob(
+      id,
+      payload,
+      Cookie.getClientCookie('token'),
+    );
+    console.log(job, state);
+    const newJobs = state.map((c) => {
+      if (c.jobId == job.jobId) {
+        return { ...job };
+      }
+      return c;
+    });
+    updateState(newJobs);
+    setLoading(false);
   };
   return (
     <>
@@ -41,7 +63,7 @@ function UpdateJob({ id }: { id: number }) {
             ✕
           </label>
 
-          <h3 className="text-lg font-bold">Update {job?.jobTitle}</h3>
+          <h3 className="text-lg font-bold">Update {payload.jobTitle}</h3>
           <div className="space-y-2">
             <div>
               <label
@@ -117,10 +139,11 @@ function UpdateJob({ id }: { id: number }) {
               </select>
             </div>
             <button
+              disabled={loading}
               onClick={submit}
               className="btn-primary btn mx-auto block w-fit"
             >
-              Publish
+              {loading ? 'Publishing...' : 'Publish'}
             </button>
           </div>
         </label>

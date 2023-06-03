@@ -2,12 +2,14 @@
 import React, { useState, useRef } from 'react';
 import Category from 'services/Category';
 import Cookie from 'services/Cookie';
-function CreateCategory() {
+function CreateCategory({ updateState, data }) {
   const labelRef = useRef<HTMLLabelElement>(null);
   const [payload, setPayload] = useState<CategoryPayload>({
     name: '',
     description: '',
   });
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChange = ({
     target: { value, name },
@@ -15,9 +17,15 @@ function CreateCategory() {
     return setPayload({ ...payload, [name]: value });
   };
   const submit = async () => {
-    await Category.createCategory(payload, Cookie.getClientCookie('token'));
+    setLoading(true);
+    const cat = await Category.createCategory(
+      payload,
+      Cookie.getClientCookie('token'),
+    );
     alert('Category created ');
+    updateState([...data, cat]);
     labelRef.current?.click();
+    setLoading(false);
   };
   return (
     <>
@@ -70,10 +78,11 @@ function CreateCategory() {
               />
             </div>
             <button
+              disabled={loading}
               onClick={submit}
               className="btn-primary btn mx-auto block w-fit"
             >
-              Publish
+              {loading ? 'Publishing...' : 'Publish'}
             </button>
           </div>
         </label>

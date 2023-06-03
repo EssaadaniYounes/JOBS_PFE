@@ -19,10 +19,11 @@ class Category {
     id: string,
     payload: any,
     token: string,
-  ): Promise<void> {
-    const data = await Fetch.put('categories/' + id, payload, {
+  ): Promise<ICategory> {
+    const {data} = await Fetch.put('categories/' + id, payload, {
       Authorization: token,
     });
+    return data;
   }
 
   static async deleteCategory(id: string, token: string): Promise<void> {

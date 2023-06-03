@@ -33,7 +33,7 @@ class Job {
     );
     return data;
   }
-  static async createJob(payload: any, token: string):Promise<IJob> {
+  static async createJob(payload: any, token: string): Promise<IJob> {
     const formData: FormData = new FormData();
     Object.keys(payload).map((key) => {
       formData.append(key, payload[key]);
@@ -43,14 +43,23 @@ class Job {
     });
     return data;
   }
-  static async updateJob(id: number, payload: any, token: string):Promise<void> {
+  static async updateJob(
+    id: number,
+    payload: any,
+    token: string,
+  ): Promise<IJob> {
     const formData: FormData = new FormData();
     Object.keys(payload).map((key) => {
       formData.append(key, payload[key]);
     });
-    const res = await Fetch.put(`Jobs/UpdateJobByPublisher/${id}`, formData, {
-      Authorization: token,
-    });
+    const { data } = await Fetch.put(
+      `Jobs/UpdateJobByPublisher/${id}`,
+      formData,
+      {
+        Authorization: token,
+      },
+    );
+    return data
   }
   static async deleteJob(id: number, token: string) {
     const data = await Fetch.delete(`Jobs/DeleteJobByPublisher/${id}`, {

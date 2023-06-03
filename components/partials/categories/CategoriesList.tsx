@@ -5,9 +5,11 @@ import { AiFillDelete, AiOutlineEdit } from 'react-icons/ai';
 import UpdateJob from './UpdateCategory';
 import Cookie from 'services/Cookie';
 import Category from 'services/Category';
+import CreateCategory from './CreateJob';
 
 function CategoriesList({ data }: { data: ICategory[] }) {
   const [selectedId, setSelectedId] = useState<number>(1);
+  const [CSRData, setCSRData] = useState<ICategory[]>(data);
   const labelRef = useRef<HTMLLabelElement>(null);
   const columns = [
     {
@@ -39,17 +41,6 @@ function CategoriesList({ data }: { data: ICategory[] }) {
       name: 'Actions',
       cell: (row: ICategory) => (
         <div className="flex items-center gap-2">
-          {/* <button
-            onClick={async () =>
-              Category.deleteCategory(
-                row.id.toString(),
-                Cookie.getClientCookie('token'),
-              )
-            }
-            className="btn-error btn-xs btn space-x-1 rounded-md"
-          >
-            <AiFillDelete size={18} color={'#f9fafb'} />
-          </button> */}
           <button
             onClick={() => {
               setSelectedId((prev: number) => {
@@ -61,7 +52,6 @@ function CategoriesList({ data }: { data: ICategory[] }) {
           >
             <AiOutlineEdit size={18} color={'#f9fafb'} />
           </button>
-          
         </div>
       ),
       ignoreRowClick: true,
@@ -72,9 +62,10 @@ function CategoriesList({ data }: { data: ICategory[] }) {
   ];
   return (
     <>
-      <UpdateJob id={selectedId} />
+      <CreateCategory updateState={setCSRData} data={CSRData} />
+      <UpdateJob id={selectedId} updateState={setCSRData} data={CSRData} />
       <label htmlFor="update-category" ref={labelRef} className=""></label>
-      <Table data={data} columns={columns} />
+      <Table data={CSRData} columns={columns} />
     </>
   );
 }

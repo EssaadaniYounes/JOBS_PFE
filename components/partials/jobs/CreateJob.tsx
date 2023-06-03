@@ -5,14 +5,15 @@ import Category from 'services/Category';
 import Job from 'services/Job';
 import Cookie from 'services/Cookie';
 const fetcher = async (...args: any[]) => await Category.getAll();
-function CreateJob({updateState, data}) {
-  const { data:categories, isLoading } = useSWR('categories', fetcher);
+function CreateJob({ updateState, data }) {
+  const { data: categories, isLoading } = useSWR('categories', fetcher);
   const [payload, setPayload] = useState<JobPayload>({
     jobDescription: '',
     categoryId: '',
     jobImage: '',
     jobTitle: '',
   });
+  const [loading, setLoading] = useState(false);
   const labelRef = useRef<HTMLLabelElement>(null);
   const handleChange = ({
     target: { value, name, files },
@@ -23,9 +24,11 @@ function CreateJob({updateState, data}) {
     setPayload({ ...payload, jobImage: files[0] });
   };
   const submit = async () => {
+    setLoading(true);
     const job = await Job.createJob(payload, Cookie.getClientCookie('token'));
-    updateState([...data,job]);
+    updateState([...data, job]);
     labelRef.current?.click();
+    setLoading(false);
   };
   return (
     <>
@@ -33,7 +36,7 @@ function CreateJob({updateState, data}) {
       <label htmlFor="my-modal-4" className="modal cursor-pointer">
         <label className="modal-box relative" htmlFor="">
           <label
-          ref={labelRef}
+            ref={labelRef}
             htmlFor="my-modal-4"
             className="btn-sm btn-circle btn absolute right-2 top-2"
           >
@@ -116,10 +119,11 @@ function CreateJob({updateState, data}) {
               </select>
             </div>
             <button
+              disabled={loading}
               onClick={submit}
               className="btn-primary btn mx-auto block w-fit"
             >
-              Publish
+              {loading ? 'Publishing...' : 'Publish'}
             </button>
           </div>
         </label>
