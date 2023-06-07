@@ -9,7 +9,7 @@ async function page() {
   const data = await User.appliedJobs(cookies().get('token')?.value);
   return (
     <div className="h-screen">
-      <MainNav />
+      <MainNav cookie={cookies} />
       <h2 className="py-4 pl-3 text-3xl font-semibold capitalize">
         The jobs you applied To:
       </h2>

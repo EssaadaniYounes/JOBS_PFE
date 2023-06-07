@@ -18,7 +18,10 @@ class Cookie {
   isExist(name: string) {
     return this.cookies.has(name);
   }
-  static getClientCookie(name: string) {
+  static getClientCookie(name: string, cookie = undefined) {
+    if (cookie != undefined) {
+      return new Cookie(cookie()).getCookie(name).value;
+    }
     var value = '; ' + document.cookie;
     var parts = value.split('; ' + name + '=');
     if (parts.length == 2) return parts.pop().split(';').shift();
