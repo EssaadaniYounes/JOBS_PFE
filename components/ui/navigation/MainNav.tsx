@@ -1,11 +1,10 @@
-import Image from 'next/image';
+'use client';
 import React from 'react';
 import demos from '@/constants/demos';
 import Link from 'next/link';
 import Cookie from 'services/Cookie';
-import { cookies } from 'next/dist/client/components/headers';
 import Logout from '@/components/partials/logout';
-function MainNav({ children, cookie }: { children?: any }) {
+function MainNav({ children }: { children?: any }) {
   return (
     <div className="fixed z-[999] mt-0 flex h-20 w-full items-center justify-between bg-white shadow-lg">
       <div className="flex items-center">
@@ -29,7 +28,7 @@ function MainNav({ children, cookie }: { children?: any }) {
               {demo.title}
             </Link>
           ))}
-          {Cookie.getClientCookie('role', cookie) == 'JobSeeker' && (
+          {Cookie.getClientCookie('role') == 'JobSeeker' && (
             <Link href={`/applied`} className="w-[150px] hover:text-cyan-700">
               Applied Jobs
             </Link>
@@ -39,7 +38,7 @@ function MainNav({ children, cookie }: { children?: any }) {
       </div>
 
       <div className="flex items-center space-x-4">
-        {!Cookie.getClientCookie('token', cookie) && (
+        {!Cookie.getClientCookie('token') && (
           <div className="navbar-end space-x-2">
             <Link
               href={'/login'}
@@ -55,7 +54,7 @@ function MainNav({ children, cookie }: { children?: any }) {
             </Link>
           </div>
         )}
-        {Cookie.getClientCookie('token', cookie) && (
+        {Cookie.getClientCookie('token') && (
           <div className="navbar-end mr-2 space-x-2 text-black">
             <div>
               <Logout />
@@ -64,53 +63,6 @@ function MainNav({ children, cookie }: { children?: any }) {
         )}
       </div>
     </div>
-
-    /* <div className="navbar bg-base-100 px-4">
-      <div className="navbar-start">
-        <Image src={'/logo.svg'} width={80} height={80} alt="Logo" />
-      </div>
-      <div className="navbar-center space-x-2 md:flex">
-        {demos.MainNavDemos.map((demo) => (
-          <Link
-            key={demo.sigment}
-            href={demo.sigment}
-            className="font-medium text-gray-600 duration-150 hover:text-gray-800"
-          >
-            {demo.title}
-          </Link>
-        ))}
-        {new Cookie(cookies()).getCookie('role')?.value == 'JobSeeker' && (
-          <Link
-            href={`/applied`}
-            className="font-medium text-gray-600 duration-150 hover:text-gray-800"
-          >
-            Applied Jobs
-          </Link>
-        )}
-      </div>
-      {!new Cookie(cookies()).isExist("token") && (
-      <div className="navbar-end space-x-2">
-        <Link
-          href={'/login'}
-          className="rounded-md bg-blue-400 px-4 py-1.5 font-medium text-white duration-150 hover:bg-blue-600"
-        >
-          Login
-        </Link>
-        <span>|</span>
-        <Link
-          href={'/register'}
-          className="rounded-md bg-gray-200 px-4 py-1.5 font-medium duration-150 hover:bg-gray-400 "
-        >
-          Register
-        </Link>
-      </div>
-      )}
-      {new Cookie(cookies()).isExist("token") && (
-      <div className="navbar-end space-x-2">
-        <Logout/>
-      </div>
-      )}
-    </div> */
   );
 }
 

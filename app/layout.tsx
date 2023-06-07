@@ -9,7 +9,7 @@ export default function RootLayout({
   return (
     <html>
       <head>
-        <title>Next.js Turbopack App Directory Playground</title>
+        <title>Jobs</title>
       </head>
       <body className="overflow-y-auto bg-gray-100">{children}</body>
     </html>

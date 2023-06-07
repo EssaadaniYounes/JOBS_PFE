@@ -1,4 +1,3 @@
-import MainNav from '@/components/ui/navigation/MainNav';
 import React from 'react';
 
 export default function RootLayout({
@@ -8,8 +7,6 @@ export default function RootLayout({
 }) {
   return (
     <div >
-      <MainNav />
-
       <div>{children}</div>
     </div>
   );

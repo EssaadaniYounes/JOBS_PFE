@@ -23,10 +23,7 @@ function page() {
   const submit = async () => {
     await User.Register(payload);
     router.push('/login')
-    // const data = await User.Register(payload);
-    // if (data.isAuthenticated) {
-    //   data.role == 'JobSeeker' ? router.push('/') : router.push('/admin');
-    // }
+
   };
   return (
 
